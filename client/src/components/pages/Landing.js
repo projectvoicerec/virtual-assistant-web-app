@@ -13,22 +13,21 @@ const jarvisGoodMorningCommand = history => {
     lang: 'en-GB',
     debug: true, // Show what recognizes in the Console
     listen: true, // Start listening after this
-    speed: 0.9, // Talk a little bit slow
+    speed: 0.8, // Talk a little bit slow
     mode: 'normal' // This parameter is not required as it will be normal by default
   })
 
-  Jarvis.on(['Sign up']).then(function (i) {
+  Jarvis.on(['go sign up']).then(function (i) {
     history.push('/signup')
   })
 
-  Jarvis.on(['Login']).then(function (i) {
+  Jarvis.on(['go Login']).then(function (i) {
     history.push('/login')
   })
 }
 
 const sayHello = () => {
-  const { Jarvis } = this
-  Jarvis.say('Hello I am Jarvis I am your virtual Assistant !')
+  Jarvis.say('Hello I am Jarvis I am your virtual Assistant  for signup please say go signup and for login say go login!')
 }
 
 const signUp = goSignup => {
@@ -44,10 +43,17 @@ const gotoSignUpPage = history => {
 
 export default function Landing (props) {
   useEffect(() => {
+    // say hello
+    setTimeout(() => {
+      sayHello()
+    }, 1500)
+
     // Update the document title using the browser API
     const { history } = props
     console.log('history', history)
-    jarvisGoodMorningCommand(history)
+    setTimeout(() => {
+      jarvisGoodMorningCommand(history)
+    }, 2500)
   })
 
   return (

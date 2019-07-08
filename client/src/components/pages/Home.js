@@ -28,9 +28,13 @@ export default class Home extends Component {
    */
   componentDidMount () {
     // Get our poats
-    const { context } = this
+    const { context, Jarvis } = this
+    const { history } = this.props
     console.log('Context', context)
     this.getHomePosts(context)
+    Jarvis.on(['go profile']).then(function (i) {
+      history.push('/profile')
+    })
     // setTimeout(() => {
     //   this.startJarvis()
     // }, 1500)
