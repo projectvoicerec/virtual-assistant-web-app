@@ -117,7 +117,7 @@ jarvisAddCommands = (Jarvis) => {
       alert('Dictation stopped by the user')
     }
   })
-  this.Jarvis.addCommands({ indexes: ['begin', 'end'],
+  this.Jarvis.addCommands({ indexes: ['jarvis start', 'jarvis shutdown'],
     action: function (i) {
       if (i === 0) {
         UserDictation.start()
