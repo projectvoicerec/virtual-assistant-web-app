@@ -3,7 +3,7 @@ import { AppContext } from '../../ContextProvider'
 
 import Artyoum from 'artyom.js'
 
-import { createPost } from '../../utils/ApiReq'
+import { createPost, logoutUser } from '../../utils/ApiReq'
 
 export default class Post extends Component {
   /**
@@ -13,17 +13,57 @@ export default class Post extends Component {
   state = { post: null, posts: [], postData: null };
   Jarvis = new Artyoum()
 
+  UserDictation = this.Jarvis.newDictation({
+    continuous: true, // Enable continuous if HTTPS connection
+    onResult: function (text) {
+      // Do something with the text
+      console.log('myText', text)
+
+      const { context } = this
+      if (text) {
+        this.setState({ post: text })
+        const { post } = this.state
+        const { posts } = context.state
+
+        const userId = context.state.userData.id
+        const postData = { postText: post, author: userId }
+        createPost(postData, context).then(res => {
+          console.log('Res', res)
+          posts.unshift(res)
+          context.setPosts(posts)
+        })
+      }
+    }.bind(this),
+    onStart: function () {
+      console.log('Dictation started by the user')
+    },
+    onEnd: function () {
+      alert('Dictation stopped by the user')
+    }
+  })
+
   /**
    * Component did mount Method
    */
   componentDidMount () {
-    const Jarvis = new Artyoum()
+    // const Jarvis = new Artyoum()
+    const { UserDictation, Jarvis, context } = this
+
     setTimeout(() => {
-      this.startJarvis()
+      this.initializeJarvis(Jarvis)
+      this.startJarvis(Jarvis)
     }, 1500)
-    setTimeout(() => {
-      this.jarvisAddCommands(Jarvis)
-    }, 2500)
+
+    if (context.state.isAuthenticated) {
+      setTimeout(() => {
+        this.jarvisAddCommands(Jarvis, UserDictation, context)
+        // Jarvis.on(['begin']).then(function (i) {
+        //   Jarvis.fatality()
+        //   UserDictation.start()
+        //   console.log('user dectation start')
+        // })
+      }, 2500)
+    }
 
     //   this.Jarvis.redirectRecognizedTextOutput((recognized, isFinal) => {
     //     const { context } = this
@@ -76,56 +116,63 @@ export default class Post extends Component {
   /**
  * Beginning of Artyoum Implementation
  */
-startJarvis = () => {
-  this.Jarvis.fatality()
-  this.Jarvis.initialize({
+initializeJarvis = (Jarvis) => {
+  Jarvis.initialize({
     lang: 'en-US',
-    continuous: false,
+    continuous: true,
     debug: true,
     speed: 0.8,
     listen: true
   })
-  this.Jarvis.say('Hello, I am Jarvis I am  your virtual assistant please say begin to start writing your posts ')
+}
+startJarvis = (Jarvis) => {
+  Jarvis.say('Hello, I am Jarvis I am  your virtual assistant please say begin to start writing your posts ')
 }
 
-jarvisAddCommands = (Jarvis) => {
-  const UserDictation = this.Jarvis.newDictation({
-    continuous: true, // Enable continuous if HTTPS connection
-    onResult: function (text) {
-      // Do something with the text
-      console.log('myText', text)
+jarvisAddCommands = (Jarvis, UserDictation, context) => {
+  // const UserDictation = this.Jarvis.newDictation({
+  //   continuous: true, // Enable continuous if HTTPS connection
+  //   onResult: function (text) {
+  //     // Do something with the text
+  //     console.log('myText', text)
 
-      const { context } = this
-      if (text) {
-        this.setState({ post: text })
-        const { post } = this.state
-        const { posts } = context.state
+  //     const { context } = this
+  //     if (text) {
+  //       this.setState({ post: text })
+  //       const { post } = this.state
+  //       const { posts } = context.state
 
-        const userId = context.state.userData.id
-        const postData = { postText: post, author: userId }
-        createPost(postData, context).then(res => {
-          console.log('Res', res)
-          posts.unshift(res)
-          context.setPosts(posts)
-        })
-      }
-    }.bind(this),
-    onStart: function () {
-      console.log('Dictation started by the user')
-    },
-    onEnd: function () {
-      alert('Dictation stopped by the user')
-    }
-  })
-  this.Jarvis.addCommands({ indexes: ['jarvis start', 'jarvis shutdown'],
+  //       const userId = context.state.userData.id
+  //       const postData = { postText: post, author: userId }
+  //       createPost(postData, context).then(res => {
+  //         console.log('Res', res)
+  //         posts.unshift(res)
+  //         context.setPosts(posts)
+  //       })
+  //     }
+  //   }.bind(this),
+  //   onStart: function () {
+  //     console.log('Dictation started by the user')
+  //   },
+  //   onEnd: function () {
+  //     alert('Dictation stopped by the user')
+  //   }
+  // })
+  Jarvis.addCommands({ indexes: ['begin', 'Log out'],
     action: function (i) {
       if (i === 0) {
+        Jarvis.fatality()
         UserDictation.start()
-      } else if (i === 1) {
-        UserDictation.stop()
+        setTimeout(() => {
+          UserDictation.stop()
+          this.initializeJarvis(Jarvis)
+        }, 25000)
       }
-    },
-    speed: 1 })
+      if (i === 1) {
+        logoutUser(context)
+      }
+    }.bind(this),
+    speed: 0.7 })
 }
 
 stopJarvis = () => {
