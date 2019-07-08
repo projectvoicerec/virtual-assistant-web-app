@@ -82,6 +82,7 @@ startJarvis = () => {
     lang: 'en-US',
     continuous: false,
     debug: true,
+    speed: 0.8,
     listen: true
   })
   this.Jarvis.say('Hello, I am Jarvis I am  your virtual assistant please say begin to start writing your posts ')
