@@ -77,6 +77,8 @@ export default class PostBody extends Component {
   }
 
   render () {
+    const { Jarvis } = this
+    Jarvis.fatality()
     const { post, i } = this.props
     const { styles, showComment } = this.state
     return (
