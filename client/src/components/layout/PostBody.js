@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import Artyoum from 'artyom.js'
+import { AppContext } from '../../ContextProvider'
+import { logoutUser } from '../../utils/ApiReq'
 
 import { FaRegThumbsUp, FaComment } from 'react-icons/fa'
 
@@ -13,7 +16,19 @@ export default class PostBody extends Component {
     showComment: false
   };
 
+  static contextType = AppContext;
+  Jarvis = new Artyoum()
+
   post = null;
+  componentDidMount () {
+    const { Jarvis, context, jarvisAddCommands } = this
+    const { history } = this.props
+    Jarvis.fatality()
+    setTimeout(() => {
+      // Jarvis.say('Hello I am Jarvis I am your virtual Assistant you are on the profile page!')
+      jarvisAddCommands(Jarvis, history, context)
+    }, 1500)
+  }
 
   like = () => {
     const { isClicked } = this.state
@@ -47,6 +62,19 @@ export default class PostBody extends Component {
       ? this.setState({ showComment: true })
       : this.setState({ showComment: false })
   };
+
+  jarvisAddCommands = (Jarvis, history, context) => {
+    Jarvis.addCommands({ indexes: ['goHome', 'logout'],
+      action: function (i) {
+        if (i === 0) {
+          history.push('/home')
+        }
+        if (i === 1) {
+          logoutUser(context)
+        }
+      },
+      speed: 0.7 })
+  }
 
   render () {
     const { post, i } = this.props

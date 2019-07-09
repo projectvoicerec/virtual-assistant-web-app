@@ -1,28 +1,45 @@
 import React, { Component, Fragment } from 'react'
 import axios from 'axios'
+import { withRouter } from 'react-router-dom'
 import Artyoum from 'artyom.js'
 import { AppConsumer, AppContext } from '../../ContextProvider'
 import { PostBody } from '../layout'
+import { logoutUser } from '../../utils/ApiReq'
 
-export default class Profile extends Component {
+class Profile extends Component {
   /**
    * Define state & Member vars
    */
 
   static contextType = AppContext;
-  Jarvis = new Artyoum()
 
   state = {
     avatar: null
   };
 
+  Jarvis = new Artyoum()
+
   componentDidMount () {
-    const { context, Jarvis } = this
+    const { Jarvis } = this
+    const { context, jarvisAddCommands } = this
+    const { history } = this.props
+    console.log('history', history)
     const userId = context.state.userData.id
     this.getUserPosts(userId, context)
     const userAvatar = this.getUserData(userId)
     context.setUserAvatar({ userAvatar })
-    Jarvis.say('Hello I am Jarvis I am your virtual Assistant you are on the Home page!')
+    Jarvis.fatality()
+    setTimeout(() => {
+      Jarvis.initialize({
+        lang: 'en-US',
+        continuous: true,
+        debug: true,
+        speed: 0.8,
+        listen: true
+      })
+      Jarvis.say('Hello I am Jarvis I am your virtual Assistant you are on the profile page!')
+      jarvisAddCommands(Jarvis, history, context)
+    }, 1500)
   }
 
   /**
@@ -56,8 +73,25 @@ export default class Profile extends Component {
     }
   };
 
+  jarvisAddCommands = (Jarvis, history, context) => {
+    Jarvis.addCommands({ indexes: ['go Home', 'log out'],
+      action: function (i) {
+        if (i === 0) {
+          history.push('/home')
+        }
+        if (i === 1) {
+          logoutUser(context)
+        }
+      },
+      speed: 0.7 })
+  }
+
   render () {
+    const { Jarvis } = this
+    Jarvis.fatality()
+
     const { context, state } = this
+    const { history } = this.props
     const userName = context.state.userData.name
     const userAvatar = this.state.avatar
 
@@ -75,7 +109,7 @@ export default class Profile extends Component {
                   </div>
                 </div>
                 {context.state.userPosts.map((post, i) => (
-                  <PostBody key={i} post={post.post} i={i} />
+                  <PostBody key={i} post={post.post} i={i} history={history} />
                 ))}
               </div>
             ) : (
@@ -87,3 +121,5 @@ export default class Profile extends Component {
     )
   }
 }
+
+export default withRouter(Profile)

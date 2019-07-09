@@ -30,9 +30,16 @@ export default class Home extends Component {
     // Get our poats
     const { context, Jarvis } = this
     const { history } = this.props
-    console.log('Context', context)
+    console.log('history', history)
     this.getHomePosts(context)
     // Jarvis.say('Hello I am Jarvis I am your virtual Assistant you are on the Home page!')
+    Jarvis.initialize({
+      lang: 'en-US',
+      continuous: false,
+      debug: true,
+      speed: 0.8,
+      listen: true
+    })
     Jarvis.on(['go profile']).then(function (i) {
       history.push('/profile')
     })
@@ -114,8 +121,10 @@ export default class Home extends Component {
    */
   render () {
     const { styles } = this.state
-    const { context } = this
+    const { context, Jarvis } = this
+    const { history } = this.props
     const { posts } = context.state
+    Jarvis.fatality()
     return (
       <Fragment>
         <div className='container home-page'>
@@ -132,7 +141,7 @@ export default class Home extends Component {
             <div className='col-lg-12 text-center py-3'>
               {/* Post Form */}
               <div className='mt-3'>
-                <AppConsumer>{context => <Post data={context} />}</AppConsumer>
+                <AppConsumer>{context => <Post data={context} history={history} />}</AppConsumer>
               </div>
             </div>
           </div>

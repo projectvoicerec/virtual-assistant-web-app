@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Link, withRouter } from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import setAuthToken from './utils/setAuthToken'
 import PrivateRoute from './components/routes/PrivateRoute'

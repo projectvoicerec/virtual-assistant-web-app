@@ -48,6 +48,7 @@ export default class Post extends Component {
   componentDidMount () {
     // const Jarvis = new Artyoum()
     const { UserDictation, Jarvis, context } = this
+    const { history } = this.props
 
     setTimeout(() => {
       this.initializeJarvis(Jarvis)
@@ -56,7 +57,7 @@ export default class Post extends Component {
 
     if (context.state.isAuthenticated) {
       setTimeout(() => {
-        this.jarvisAddCommands(Jarvis, UserDictation, context)
+        this.jarvisAddCommands(Jarvis, UserDictation, context, history)
         // Jarvis.on(['begin']).then(function (i) {
         //   Jarvis.fatality()
         //   UserDictation.start()
@@ -129,7 +130,7 @@ startJarvis = (Jarvis) => {
   Jarvis.say('Hello, I am Jarvis I am  your virtual assistant please say begin to start writing your posts ')
 }
 
-jarvisAddCommands = (Jarvis, UserDictation, context) => {
+jarvisAddCommands = (Jarvis, UserDictation, context, history) => {
   // const UserDictation = this.Jarvis.newDictation({
   //   continuous: true, // Enable continuous if HTTPS connection
   //   onResult: function (text) {
@@ -158,7 +159,7 @@ jarvisAddCommands = (Jarvis, UserDictation, context) => {
   //     alert('Dictation stopped by the user')
   //   }
   // })
-  Jarvis.addCommands({ indexes: ['begin', 'Log out'],
+  Jarvis.addCommands({ indexes: ['begin', 'Log out', 'go profile', 'go home'],
     action: function (i) {
       if (i === 0) {
         Jarvis.fatality()
@@ -170,6 +171,14 @@ jarvisAddCommands = (Jarvis, UserDictation, context) => {
       }
       if (i === 1) {
         logoutUser(context)
+      }
+      if (i === 2) {
+        Jarvis.fatality()
+        history.push('/profile')
+      }
+      if (i === 3) {
+        Jarvis.fatality()
+        history.push('/home')
       }
     }.bind(this),
     speed: 0.7 })
