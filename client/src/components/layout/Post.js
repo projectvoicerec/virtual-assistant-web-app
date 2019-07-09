@@ -207,7 +207,7 @@ stopJarvis = () => {
 
 render () {
   const { Jarvis } = this
-  Jarvis.fatality()
+
   const { data } = this.props
   return (
     <React.Fragment>
