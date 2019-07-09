@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Artyoum from 'artyom.js'
 import { RegisterNewUser } from '../../utils/ApiReq'
 import { AppConsumer, AppContext } from '../../ContextProvider'
 
@@ -16,6 +17,12 @@ export default class Register extends Component {
   };
 
   static contextType = AppContext;
+  Jarvis = new Artyoum()
+
+  componentDidMount () {
+    const { Jarvis } = this
+    Jarvis.say('Hello I am Jarvis I am your virtual Assistant you are on the Sign up page!')
+  }
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.isAuthenticated) {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Artyoum from 'artyom.js'
 import { loginUser } from '../../utils/ApiReq'
 import { AppConsumer } from '../../ContextProvider'
 
@@ -11,6 +12,15 @@ export default class Login extends Component {
     password: '',
     errors: null
   };
+
+  Jarvis = new Artyoum()
+
+  componentDidMount () {
+    const { Jarvis } = this
+    setTimeout(() => {
+      Jarvis.say('Hello I am Jarvis I am your virtual Assistant you are on the Login page!')
+    }, 1500)
+  }
 
   componentWillReceiveProps (nextProps) {
     console.log('Next Props ==', nextProps)
@@ -38,7 +48,7 @@ export default class Login extends Component {
 
     const geterrors = async () => {
       await loginUser(userData, history, context)
-    };
+    }
     geterrors()
     // this.props.loginUser(userData);
   };

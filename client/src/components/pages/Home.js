@@ -32,6 +32,7 @@ export default class Home extends Component {
     const { history } = this.props
     console.log('Context', context)
     this.getHomePosts(context)
+    // Jarvis.say('Hello I am Jarvis I am your virtual Assistant you are on the Home page!')
     Jarvis.on(['go profile']).then(function (i) {
       history.push('/profile')
     })

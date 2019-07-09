@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import axios from 'axios'
+import Artyoum from 'artyom.js'
 import { AppConsumer, AppContext } from '../../ContextProvider'
 import { PostBody } from '../layout'
 
@@ -9,17 +10,19 @@ export default class Profile extends Component {
    */
 
   static contextType = AppContext;
+  Jarvis = new Artyoum()
 
   state = {
     avatar: null
   };
 
   componentDidMount () {
-    const { context } = this
+    const { context, Jarvis } = this
     const userId = context.state.userData.id
     this.getUserPosts(userId, context)
     const userAvatar = this.getUserData(userId)
     context.setUserAvatar({ userAvatar })
+    Jarvis.say('Hello I am Jarvis I am your virtual Assistant you are on the Home page!')
   }
 
   /**
