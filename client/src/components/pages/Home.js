@@ -33,16 +33,16 @@ export default class Home extends Component {
     console.log('history', history)
     this.getHomePosts(context)
     // Jarvis.say('Hello I am Jarvis I am your virtual Assistant you are on the Home page!')
-    Jarvis.initialize({
-      lang: 'en-US',
-      continuous: false,
-      debug: true,
-      speed: 0.8,
-      listen: true
-    })
-    Jarvis.on(['go profile']).then(function (i) {
-      history.push('/profile')
-    })
+    // Jarvis.initialize({
+    //   lang: 'en-US',
+    //   continuous: false,
+    //   debug: true,
+    //   speed: 0.8,
+    //   listen: true
+    // })
+    // Jarvis.on(['go profile']).then(function (i) {
+    //   history.push('/profile')
+    // })
     // setTimeout(() => {
     //   this.startJarvis()
     // }, 1500)

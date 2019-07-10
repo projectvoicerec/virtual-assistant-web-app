@@ -57,53 +57,57 @@ export default class Login extends Component {
     const { email, password, errors } = this.state
     return (
       <div className=' container login-page'>
-        <div className='row justify-content-center pt-5 px-5'>
-          <h3>Login Page</h3>
+        <div className='row  py-2 mb-3 px-2'>
+          <h4>Login Page</h4>
         </div>
-        <AppConsumer>
-          {context => (
-            <form
-              action=''
-              onSubmit={e => {
-                this.onSubmit(e, context)
-              }}
-            >
-              <div className='form-group'>
-                {context.state.errors ? (
-                  <div className='alert alert-danger login-errors' role='alert'>
-                    {context.state.errors.error}
-                  </div>
-                ) : null}
-                <label htmlFor='exampleInputEmail1'>Email address</label>
-                <input
-                  onChange={this.onChange}
-                  // error={errors.email}
-                  value={email}
-                  type='email'
-                  className='form-control'
-                  id='email'
-                  aria-describedby='emailHelp'
-                  placeholder='Enter email'
-                />
-              </div>
-              <div className='form-group'>
-                <label htmlFor='exampleInputPassword1'>Password</label>
-                <input
-                  onChange={this.onChange}
-                  value={password}
-                  // error={errors.password}
-                  type='password'
-                  className='form-control'
-                  id='password'
-                  placeholder='Password'
-                />
-              </div>
-              <button type='submit' className='btn btn-dark'>
+        <div className='row'>
+          <AppConsumer>
+            {context => (
+              <form
+                action=''
+                onSubmit={e => {
+                  this.onSubmit(e, context)
+                }}
+              >
+                <div className='form-group'>
+
+                  {context.state.errors ? (
+                    <div className='alert alert-danger login-errors' role='alert'>
+                      {context.state.errors.error}
+                    </div>
+                  ) : null}
+                  <label htmlFor='exampleInputEmail1'>Email address</label>
+                  <input
+                    onChange={this.onChange}
+                    // error={errors.email}
+                    value={email}
+                    type='email'
+                    className='form-control'
+                    id='email'
+                    aria-describedby='emailHelp'
+                    placeholder='Enter email'
+                  />
+                </div>
+                <div className='form-group'>
+                  <label htmlFor='exampleInputPassword1'>Password</label>
+                  <input
+                    onChange={this.onChange}
+                    value={password}
+                    // error={errors.password}
+                    type='password'
+                    className='form-control'
+                    id='password'
+                    placeholder='Password'
+                  />
+                </div>
+                <button type='submit' className='btn btn-dark'>
                 Submit
-              </button>
-            </form>
-          )}
-        </AppConsumer>
+                </button>
+              </form>
+            )}
+          </AppConsumer>
+        </div>
+
       </div>
     )
   }

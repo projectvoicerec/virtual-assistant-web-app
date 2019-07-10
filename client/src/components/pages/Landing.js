@@ -5,18 +5,17 @@ import { AppContext, AppConsumer } from '../../ContextProvider'
 const contextType = AppContext
 const Jarvis = new Artyom()
 
-Jarvis.initialize({
-  lang: 'en-GB',
-  debug: true, // Show what recognizes in the Console
-  listen: true, // Start listening after this
-  speed: 0.8, // Talk a little bit slow
-  mode: 'normal' // This parameter is not required as it will be normal by default
-})
-
-const jarvisGoodMorningCommand = history => {
+const jarvisCommand = history => {
+  Jarvis.fatality()
   // Or the artisan mode to write less
-
-  // initialize jarvis
+  Jarvis.initialize({
+    lang: 'en-US',
+    continuos: true,
+    debug: true, // Show what recognizes in the Console
+    listen: true, // Start listening after this
+    speed: 0.9, // Talk a little bit slow
+    mode: 'normal' // This parameter is not required as it will be normal by default
+  })
 
   Jarvis.on(['go sign up']).then(function (i) {
     history.push('/signup')
@@ -28,7 +27,9 @@ const jarvisGoodMorningCommand = history => {
 }
 
 const sayHello = () => {
-  Jarvis.say('Hi I am Jarvis you are on landing page  for signup please say go signup and for login say go login!')
+  Jarvis.say('Social Network for Blind')
+  Jarvis.say('Communicate and interact with the community using your voice.')
+  Jarvis.say('you are on landing page for signup please say go signup and for login say go login!')
 }
 
 const signUp = goSignup => {
@@ -43,18 +44,18 @@ const gotoSignUpPage = history => {
 }
 
 export default function Landing (props) {
+  const { history } = props
   useEffect(() => {
-    // say hello
     setTimeout(() => {
-      Jarvis.say('Hi I am Jarvis you are on landing page  for signup please say go signup and for login say go login!')
+      sayHello()
     }, 1500)
 
-    // Update the document title using the browser API
+    // // Update the document title using the browser API
     const { history } = props
     console.log('history', history)
     setTimeout(() => {
-      jarvisGoodMorningCommand(history)
-    }, 2500)
+      jarvisCommand(history)
+    }, 5500)
   })
 
   return (

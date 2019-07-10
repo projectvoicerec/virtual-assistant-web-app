@@ -80,8 +80,24 @@ ul {
 .menu-items {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 12rem;
+}
+
+@media screen and (max-width: 425px) {
+    .menu-items {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        width: 12rem;
+    }
+    .nav-row {
+        height: 60px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-around;
+    }
 }
 
 /* Landing page styles */

@@ -33,7 +33,7 @@ export default class Header extends Component {
         <div className='container'>
           <div className='row nav-row'>
             <Link to='/' className='logo'>
-              <h4>Social-Network</h4>
+              <h5>Social-Network</h5>
             </Link>
             <AppConsumer>
               {context => (
@@ -41,13 +41,13 @@ export default class Header extends Component {
                   {context.state.isAuthenticated ? (
                     <div className='d-flex flex-row align-items-center p-2'>
                       <Link to='/home'>
-                        <h5 className='mr-3'>Home</h5>
+                        <h6 className='mr-2'>Home</h6>
                       </Link>
                       <Link to='/profile'>
-                        <h5>profile</h5>
+                        <h6>profile</h6>
                       </Link>
                       <Link to='/' onClick={e => logoutUser(context)}>
-                        <h5 className='ml-3 logout-btn'>logout</h5>
+                        <h6 className='ml-3 logout-btn'>logout</h6>
                       </Link>
                     </div>
                   ) : (
